@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBlogPost;
 use App\Models\BlogPost;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class BlogPostController extends Controller
@@ -16,7 +17,7 @@ class BlogPostController extends Controller
      */
     public function index()
     {
-        return view('blogposts.index', ['blogposts'=>BlogPost::all()]); //BlogPost::orderBy('created_at', 'desc')->take(5)->get()]);
+        return view('blogposts.index', ['blogposts'=>BlogPost::withCount('comments')->get()]); //BlogPost::orderBy('created_at', 'desc')->take(5)->get()]);
     }
 
     /**
@@ -28,6 +29,7 @@ class BlogPostController extends Controller
     {
         return view('blogposts.create');
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -46,6 +48,8 @@ class BlogPostController extends Controller
         $request->session()->flash('status', 'TheBlog Post was created!');
         return redirect()->route('blogposts.show',['blogpost'=> $blogpost->id]);
     }
+
+
 
     /**
      * Display the specified resource.
@@ -67,7 +71,7 @@ class BlogPostController extends Controller
      */
     public function edit($id)
     {
-        return view('blogposts.edit',['blogposts'=>BlogPost::find($id)]);
+        return view('blogposts.edit',['blogposts'=>BlogPost::find($id) ]);
     }
 
     /**
@@ -100,6 +104,7 @@ class BlogPostController extends Controller
     public function destroy($id)
     {
         $blogpost = BlogPost::find($id);
+        $this->authorize('blogposts.delete',$blogpost);
         $blogpost->delete();
         session()->flash('status','Blog Post With the ID' .$id . 'was deleted!');
         return redirect()->route('blogposts.index');

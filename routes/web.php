@@ -1,5 +1,7 @@
 <?php
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers;
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\BlogPostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/',[\App\Http\Controllers\HomeController::class, 'home'])->name('home.index');
+//Route::get('/',[\App\Http\Controllers\InternalAreaController::class, 'home'])->name('home.index');
 
-//Route::get('/contact',[HomeController::class, 'contact'])->name('home.contact');
+//Route::get('/contact',[InternalAreaController::class, 'contact'])->name('home.contact');
 
 
 
@@ -35,6 +37,13 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/recent-posts/{days_ago?}', function ($days_ago = 20) {
 //   return 'posts from ' .$days_ago . ' days ago';
 //})->name('posts.recent.index');
+//Route::resource('blogposts',\App\Http\Controllers\BlogPostController::class)->only('createComment');
 
-Route::resource('blogposts',\App\Http\Controllers\BlogPostController::Class);//->only('index', 'show','create');
-//Route::resource('blogposts',\App\Http\Controllers\BlogPostController::Class)->except('edit', 'update', 'destroy');
+
+Route::get('/',[Controllers\HomeController::class, 'home'])->name('home.index');
+Route::get('/home',[Controllers\HomeController::class, 'index'])->name('home.home');
+Route::get('/contact',[Controllers\HomeController::class, 'contact'])->name('home.contact');
+Route::resource('blogposts',BlogPostController::Class);//->only('index', 'show','create');
+Route::resource('author',AuthorController::class);//->only('index', 'show','create');
+Route::resource('comment',Controllers\CommentController::Class);
+Auth::routes();

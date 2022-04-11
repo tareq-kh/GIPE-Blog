@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Profile extends Model
 {
     use HasFactory;
-
+    protected $fillable = ['email',
+    ];
 
     public function author()
     {

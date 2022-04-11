@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layout.navbar')
 @section('title', 'Blog Posts page')
 @section('content')
     @if(session('status'))
